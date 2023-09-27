@@ -858,7 +858,6 @@ MonoBehaviour:
   - {fileID: 805096206}
   Allies: []
   Enemies: []
-  ProcessingTurn: 0
 --- !u!4 &1441167046
 Transform:
   m_ObjectHideFlags: 0

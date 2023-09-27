@@ -1,8 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Core.Scripts;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -11,8 +9,8 @@ public class BattleManager : Singleton<BattleManager> {
     public List<Pawn> Allies = new List<Pawn>();
     public List<Pawn> Enemies = new List<Pawn>();
 
-    public bool ProcessingTurn = false;
-    public  GameActionNode currentNode = null;
+    public GameActionNode currentNode = null;
+    private CancellationTokenSource _cts;
 
     private void Awake() {
         AllPawns = FindObjectsOfType<Pawn>().ToList();
@@ -20,37 +18,38 @@ public class BattleManager : Singleton<BattleManager> {
         Enemies = FindObjectsOfType<Pawn>().Where(pawn => pawn.Team == Team.Enemy).ToList();
     }
 
-    private void Update() {
-        if (ProcessingTurn) return;
+    private void Start() {
+        _cts = new CancellationTokenSource();
+        BattleLoop().Forget();
+    }
 
-        AllPawns.ForEach(pawn => pawn.TurnProgress += pawn.Stats.Speed * Time.deltaTime);
+    private async UniTask BattleLoop() {
+        while (!_cts.IsCancellationRequested) {
+            await UniTask.Yield(cancellationToken: _cts.Token);
 
-        var pawnTurn = AllPawns.FirstOrDefault(pawn => pawn.TurnProgress >= 100);
+            AllPawns.ForEach(pawn => pawn.TurnProgress += pawn.Stats.Speed * Time.deltaTime);
+            var pawnTurn = AllPawns.FirstOrDefault(pawn => pawn.TurnProgress >= 100);
 
-        if (pawnTurn != null) {
-            ProcessingTurn = true;
+            if (pawnTurn == null) continue;
             pawnTurn.TurnProgress = 0;
-            HandleTurn(pawnTurn);
+            await HandleTurn(pawnTurn).AttachExternalCancellation(_cts.Token);
         }
     }
 
+    private void OnDestroy() {
+        _cts.Cancel();
+    }
+
     private async UniTask HandleTurn(Pawn pawn) {
-        Debug.Log($"HandleTurn() - Start");
         currentNode = pawn.PostAction();
         await currentNode.Animation();
         currentNode.Payload(pawn, currentNode.Victims);
-
-        if (currentNode.Reactions.Count > 0) {
-            Debug.Log($"Processing reactions!");
-        }
 
         foreach (GameActionNode actionNode in currentNode.Reactions) {
             await actionNode.Animation();
             actionNode.Payload(pawn, currentNode.Victims);
         }
 
-        Debug.Log($"Done processing.");
-        ProcessingTurn = false;
         currentNode = null;
     }
 
@@ -61,7 +60,6 @@ public class BattleManager : Singleton<BattleManager> {
         }
 
         currentNode.Reactions.Add(response);
-        Debug.Log($"Response added!");
         return true;
     }
 
