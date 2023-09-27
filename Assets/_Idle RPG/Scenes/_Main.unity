@@ -401,9 +401,12 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1109986072035710, guid: ff726cbf10a6436a8c11071a7641036f, type: 3}
       insertIndex: 1
-      addedObject: {fileID: 805096206}
+      addedObject: {fileID: 805096210}
     - targetCorrespondingSourceObject: {fileID: 1109986072035710, guid: ff726cbf10a6436a8c11071a7641036f, type: 3}
       insertIndex: 2
+      addedObject: {fileID: 805096206}
+    - targetCorrespondingSourceObject: {fileID: 1109986072035710, guid: ff726cbf10a6436a8c11071a7641036f, type: 3}
+      insertIndex: 3
       addedObject: {fileID: 805096209}
   m_SourcePrefab: {fileID: 100100000, guid: ff726cbf10a6436a8c11071a7641036f, type: 3}
 --- !u!114 &805096203 stripped
@@ -441,6 +444,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Character: {fileID: 805096203}
   Stats: {fileID: 805096209}
+  Team: 1
   TurnProgress: 0
 --- !u!114 &805096209
 MonoBehaviour:
@@ -454,7 +458,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19c9a2ac2e569c04dbc6dbec299630e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 1
+  CurrentHealth: Infinity
+  MaxHealth: 75
+  Speed: 0
+--- !u!114 &805096210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 805096205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a509f4a08508fe645b1b17d5ee7f98dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  owner: {fileID: 805096206}
+--- !u!114 &807587986 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114518248883234056, guid: df3cdd88370eb014fac54881d15a710b, type: 3}
+  m_PrefabInstance: {fileID: 1703356232}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 373415518a0b7b947977a3d9880aca41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &963198749
 GameObject:
   m_ObjectHideFlags: 0
@@ -547,6 +577,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1020731623 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114594499112636286, guid: 1ce5c8f5801f7f347a34de64c889d8d5, type: 3}
+  m_PrefabInstance: {fileID: 410408985}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 373415518a0b7b947977a3d9880aca41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1194821577
 GameObject:
   m_ObjectHideFlags: 0
@@ -603,7 +644,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
 --- !u!114 &1194821580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -663,6 +704,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Owner: {fileID: 805096206}
+  HealthProgressBar: {fileID: 1020731623}
   TurnProgressBar: {fileID: 789016361}
 --- !u!1001 &1364752667
 PrefabInstance:
@@ -765,6 +807,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Character: {fileID: 1364752669}
   Stats: {fileID: 1364752674}
+  Team: 0
   TurnProgress: 0
 --- !u!114 &1364752674
 MonoBehaviour:
@@ -778,7 +821,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19c9a2ac2e569c04dbc6dbec299630e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 10
+  CurrentHealth: Infinity
+  MaxHealth: 75
+  Speed: 50
 --- !u!1 &1441167044
 GameObject:
   m_ObjectHideFlags: 0
@@ -891,7 +936,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
 --- !u!114 &1588532582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -951,6 +996,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Owner: {fileID: 1364752671}
+  HealthProgressBar: {fileID: 807587986}
   TurnProgressBar: {fileID: 83337206}
 --- !u!1001 &1703356232
 PrefabInstance:
@@ -1234,6 +1280,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df3cdd88370eb014fac54881d15a710b, type: 3}
+--- !u!1 &1987193508
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1987193509}
+  m_Layer: 0
+  m_Name: EventBus
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1987193509
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1987193508}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3085289370224393887
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1344,5 +1421,6 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 963198752}
+  - {fileID: 1987193509}
   - {fileID: 1441167046}
   - {fileID: 307292370}
