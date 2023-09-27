@@ -35,10 +35,9 @@ public class BattleManager : Singleton<BattleManager> {
     }
 
     private async UniTask HandleTurn(Pawn pawn) {
-        //await pawn.TakeTurn();
         Debug.Log($"HandleTurn() - Start");
         currentNode = pawn.PostAction();
-        await currentNode.Animation;
+        await currentNode.Animation();
         currentNode.Payload(pawn, currentNode.Victims);
 
         if (currentNode.Reactions.Count > 0) {
@@ -46,7 +45,7 @@ public class BattleManager : Singleton<BattleManager> {
         }
 
         foreach (GameActionNode actionNode in currentNode.Reactions) {
-            await actionNode.Animation;
+            await actionNode.Animation();
             actionNode.Payload(pawn, currentNode.Victims);
         }
 

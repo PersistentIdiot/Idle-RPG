@@ -17,7 +17,7 @@ public class TestAttackListener : MonoBehaviour {
             var response = new GameActionNode(
                 owner,
                 BattleManager.Instance.GetEnemiesOfPawn(owner),
-                owner.TestAttack(),
+                owner.TestAttack,
                 (pawn, list) => {
                     Debug.Log($"{owner.gameObject.name} counterattacked!");
                 });

@@ -23,7 +23,7 @@ public class Pawn : MonoBehaviour {
         var test = new GameActionNode(
             this,
             BattleManager.Instance.GetEnemiesOfPawn(this),
-            TestAttack(),
+            TestAttack,
             (instigator, victims) => {
                 Debug.Log($"{instigator.gameObject.name} finished a game action!");
                 victims.ForEach(pawn => pawn.Stats.CurrentHealth -= 1);
