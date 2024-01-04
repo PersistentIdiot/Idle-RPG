@@ -556,9 +556,9 @@ namespace Assets.HeroEditor.Common.Scripts.EditorScripts
 
         public override void Load(string path)
         {
-			var character = UnityEditor.AssetDatabase.LoadAssetAtPath<Character>(path);
+			var character = UnityEditor.AssetDatabase.LoadAssetAtPath<PawnModel>(path);
 
-            Character.GetFirearm().Params = character.Firearm.Params; // TODO: Workaround
+            Character.GetFirearm().Params = character.Firearm.Params; // Workaround
 			Load(character);
             Character.GetComponent<CharacterBodySculptor>().OnCharacterLoaded(character);
         }

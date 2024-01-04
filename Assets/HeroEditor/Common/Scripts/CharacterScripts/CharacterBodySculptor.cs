@@ -97,9 +97,9 @@ namespace Assets.HeroEditor.Common.Scripts.CharacterScripts
             }
         }
 
-		public void OnCharacterLoaded(Character character)
+		public void OnCharacterLoaded(PawnModel pawnModel)
 		{
-			OnCharacterLoaded(character.BodyScale);
+			OnCharacterLoaded(pawnModel.BodyScale);
 		}
 
 		public void OnCharacterLoaded(Vector2 bodyScale)

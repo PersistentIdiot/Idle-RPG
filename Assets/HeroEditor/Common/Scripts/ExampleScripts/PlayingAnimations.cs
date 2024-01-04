@@ -1,5 +1,6 @@
 ﻿using Assets.HeroEditor.Common.Scripts.CharacterScripts;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
 {
@@ -8,56 +9,58 @@ namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
 	/// </summary>
 	public class PlayingAnimations : MonoBehaviour
 	{
-		public Character Character;
+		[FormerlySerializedAs("characterModel")]
+		[FormerlySerializedAs("Character")]
+		public PawnModel pawnModel;
 
 		public void Reset()
 		{
-			Character.ResetAnimation();
+			pawnModel.ResetAnimation();
 		}
 
         public void GetReady()
         {
-            Character.GetReady();
+            pawnModel.GetReady();
         }
 
         public void Relax()
         {
-            Character.Relax();
+            pawnModel.Relax();
         }
 
 		public void Idle()
 		{
-			Character.SetState(CharacterState.Idle);
+			pawnModel.SetState(CharacterState.Idle);
 		}
 
 		public void Walk()
 		{
-            Character.SetState(CharacterState.Walk);
+            pawnModel.SetState(CharacterState.Walk);
 		}
 
 		public void Run()
 		{
-            Character.SetState(CharacterState.Run);
+            pawnModel.SetState(CharacterState.Run);
 		}
 
 		public void Jump()
 		{
-            Character.SetState(CharacterState.Jump);
+            pawnModel.SetState(CharacterState.Jump);
 		}
 
 		public void Slash()
 		{
-			Character.Slash();
+			pawnModel.Slash();
 		}
 
 		public void Jab()
 		{
-			Character.Jab();
+			pawnModel.Jab();
 		}
 
         public void Die()
         {
-			Character.SetState(CharacterState.DeathB);
+			pawnModel.SetState(CharacterState.DeathB);
 		}
 	}
 }

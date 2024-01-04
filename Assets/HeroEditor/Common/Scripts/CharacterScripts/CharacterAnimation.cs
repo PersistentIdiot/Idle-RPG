@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.HeroEditor.Common.Scripts.CharacterScripts
 {
-    public partial class Character
+    public partial class PawnModel
     {
         public void ResetAnimation()
         {

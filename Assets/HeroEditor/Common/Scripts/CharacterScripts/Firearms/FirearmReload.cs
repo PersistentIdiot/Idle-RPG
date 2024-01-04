@@ -2,6 +2,7 @@
 using Assets.HeroEditor.Common.Scripts.CharacterScripts;
 using Assets.HeroEditor.Common.Scripts.CharacterScripts.Firearms.Enums;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Assets.HeroEditor.Common.Scripts.CharacterScripts.Firearms
 {
@@ -10,7 +11,9 @@ namespace Assets.HeroEditor.Common.Scripts.CharacterScripts.Firearms
     /// </summary>
     public class FirearmReload : MonoBehaviour
     {
-        public Character Character;
+        [FormerlySerializedAs("characterModel")]
+        [FormerlySerializedAs("Character")]
+        public PawnModel pawnModel;
         public Firearm Firearm;
         public AudioSource AudioSource;
 
@@ -34,7 +37,7 @@ namespace Assets.HeroEditor.Common.Scripts.CharacterScripts.Firearms
             var duration = Firearm.Params.MagazineType == MagazineType.Removable ? clip.length : clip.length * Firearm.AmmoShooted;
 
             Reloading = true;
-            Character.Animator.SetBool("Reloading", true);
+            pawnModel.Animator.SetBool("Reloading", true);
 
             switch (Firearm.Params.LoadType)
             {
@@ -58,8 +61,8 @@ namespace Assets.HeroEditor.Common.Scripts.CharacterScripts.Firearms
 			}
 
             Firearm.AmmoShooted = 0;
-            Character.Animator.SetBool("Reloading", false);
-            Character.Animator.SetInteger("HoldType", (int) Firearm.Params.HoldType);
+            pawnModel.Animator.SetBool("Reloading", false);
+            pawnModel.Animator.SetInteger("HoldType", (int) Firearm.Params.HoldType);
             Reloading = false;
         }
 

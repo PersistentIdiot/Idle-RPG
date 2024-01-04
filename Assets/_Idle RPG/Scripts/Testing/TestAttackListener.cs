@@ -9,13 +9,13 @@ public class TestAttackListener : MonoBehaviour {
     public Pawn owner;
 
     private void OnEnable() {
-        EventBus.SubscribeTo<TestAttackEvent>(AttackHandler);
+        EventBus.SubscribeTo<AttackEvent>(AttackHandler);
     }
 
-    private void AttackHandler(ref TestAttackEvent eventData) {
+    private void AttackHandler(ref AttackEvent eventData) {
         // Check if owner is victim of the attack
         if (eventData.Victims.Any(pawn => pawn == owner)) {
-            Debug.Log($"{nameof(TestAttackListener)} is attacking in response to an attack!");
+            // Debug.Log($"{nameof(TestAttackListener)} is attacking in response to an attack!");
             // If we are, post a game response with the aggressors as the target.
             List<Pawn> aggressors = new List<Pawn>();
             aggressors.Add(eventData.Instigator);
@@ -23,24 +23,23 @@ public class TestAttackListener : MonoBehaviour {
             // Response will be a jab attack against the aggressor
             var response = new GameActionNode(owner, aggressors, () => {
                 //owner.TestAttack();
-                var attackEvent = new TestAttackEvent {
+                var attackEvent = new AttackEvent {
                     Instigator = owner,
                     Victims = aggressors
                 };
                 EventBus.RaiseImmediately(ref attackEvent);
-                owner.Character.Jab();
+                owner.PawnModel.Jab();
                 
                 return default;
             },
                 (instigator, victims) => {
-                    instigator.Stats.CurrentHealth -= owner.Stats.AttackDamage / 2;
-                    BattleManager.Instance.TESTDamageNumber.Spawn(instigator.transform.position + new Vector3(0, 2, 0), owner.Stats.AttackDamage / 2);
+                    instigator.TakeDamage(owner, owner.Stats.AttackDamage / 2);
                 });
             BattleManager.Instance.AddGameActionResponse(response);
         }
     }
 
     private void OnDisable() {
-        EventBus.UnsubscribeFrom<TestAttackEvent>(AttackHandler);
+        EventBus.UnsubscribeFrom<AttackEvent>(AttackHandler);
     }
 }

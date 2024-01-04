@@ -4,7 +4,7 @@
     /// Add new item attributes here.
     /// Use constant integer values for enums to avoid data distortion when adding/removing new values.
     /// </summary>
-    public enum PropertyId // TODO: Set indexes.
+    public enum PropertyId // Set indexes.
     {
         Accuracy,
         Ammo,

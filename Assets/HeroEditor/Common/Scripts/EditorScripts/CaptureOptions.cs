@@ -44,7 +44,7 @@ namespace Assets.HeroEditor.Common.Scripts.EditorScripts
 
             if (Shot.isOn)
             {
-                var character = FindObjectOfType<Character>();
+                var character = FindObjectOfType<PawnModel>();
 
                 switch (character.WeaponType)
                 {

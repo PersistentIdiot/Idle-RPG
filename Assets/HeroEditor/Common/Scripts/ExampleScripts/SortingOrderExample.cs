@@ -12,7 +12,7 @@ namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
 		/// <summary>
 		/// Order characters by sorting order. // TODO: Legacy. Use SortingGroup!
 		/// </summary>
-		public static void OrderByIndex(Character front, Character back)
+		public static void OrderByIndex(PawnModel front, PawnModel back)
 		{
 			front.LayerManager.SetSortingGroupOrder(200);
 			back.LayerManager.SetSortingGroupOrder(100);
@@ -21,7 +21,7 @@ namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
 		/// <summary>
 		/// Use it when you have a static scene with multiple characters and you want to sort them by Y.
 		/// </summary>
-		public void SetupSortingOrderByY(List<Character> character)
+		public void SetupSortingOrderByY(List<PawnModel> character)
 		{
 			var list = character.OrderBy(i => i.transform.position.x - 1000 * i.transform.position.y).ToList();
 

@@ -22,12 +22,12 @@ namespace Assets.HeroEditor.Common.Scripts.EditorScripts
 
         public void OnValidate()
         {
-            var character = FindObjectOfType<Character>();
+            var character = FindObjectOfType<PawnModel>();
 
             CharacterEditor.Character = character;
-            AnimationManager.Character = character;
-            AttackingExample.Character = character;
-            BowExample.Character = character;
+            AnimationManager.pawnModel = character;
+            AttackingExample.pawnModel = character;
+            BowExample.pawnModel = character;
         }
 
         public void Awake()

@@ -3,6 +3,7 @@ using System.Linq;
 using Assets.HeroEditor.Common.Scripts.CharacterScripts.Firearms.Enums;
 using HeroEditor.Common.Enums;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Assets.HeroEditor.Common.Scripts.CharacterScripts.Firearms
 {
@@ -11,7 +12,9 @@ namespace Assets.HeroEditor.Common.Scripts.CharacterScripts.Firearms
     /// </summary>
     public class FirearmFire : MonoBehaviour
     {
-        public Character Character;
+        [FormerlySerializedAs("characterModel")]
+        [FormerlySerializedAs("Character")]
+        public PawnModel pawnModel;
         public Firearm Firearm;
         public FingerTrigger Finger;
         public Transform Slide;
@@ -34,7 +37,7 @@ namespace Assets.HeroEditor.Common.Scripts.CharacterScripts.Firearms
 
         public void Update()
         {
-			if (Character.WeaponType != WeaponType.Firearm1H && Character.WeaponType != WeaponType.Firearm2H) return;
+			if (pawnModel.WeaponType != WeaponType.Firearm1H && pawnModel.WeaponType != WeaponType.Firearm2H) return;
             if (Firearm.Params == null) return;
 
             if (Firearm.Params.AutomaticFire ? FireButtonPressed : FireButtonDown)
@@ -107,7 +110,7 @@ namespace Assets.HeroEditor.Common.Scripts.CharacterScripts.Firearms
 
             if (!Firearm.Params.AutomaticLoad)
             {
-                Character.Animator.CrossFade(Firearm.Params.LoadAnimation.name, 0.1f, 0);
+                pawnModel.Animator.CrossFade(Firearm.Params.LoadAnimation.name, 0.1f, 0);
             }
         }
 
@@ -126,7 +129,7 @@ namespace Assets.HeroEditor.Common.Scripts.CharacterScripts.Firearms
                 FireMuzzle.transform.localPosition = Vector3.zero;
                 FireMuzzle.transform.localRotation = Quaternion.Euler(0, -90, 0);
 
-                var rifleSortingOrder = Character.FirearmsRenderers.Single(i => i.name == "Rifle").sortingOrder;
+                var rifleSortingOrder = pawnModel.FirearmsRenderers.Single(i => i.name == "Rifle").sortingOrder;
 
                 foreach (var fx in Firearm.FireTransform.GetComponentsInChildren<Renderer>())
                 {
@@ -166,7 +169,7 @@ namespace Assets.HeroEditor.Common.Scripts.CharacterScripts.Firearms
             }
         }
 
-        private void CreateBullet() // TODO: Preload and caching prefabs is recommended to improve game performance
+        private void CreateBullet() // Preload and caching prefabs is recommended to improve game performance
         {
             if (!CreateBullets) return;
 
@@ -195,25 +198,25 @@ namespace Assets.HeroEditor.Common.Scripts.CharacterScripts.Firearms
                 bullet.transform.localPosition = Vector3.zero;
                 bullet.transform.localRotation = Quaternion.identity;
                 bullet.transform.SetParent(null);
-                bullet.GetComponent<SpriteRenderer>().sprite = Character.Firearms.Single(j => j.name == "Bullet");
+                bullet.GetComponent<SpriteRenderer>().sprite = pawnModel.Firearms.Single(j => j.name == "Bullet");
                 bullet.GetComponent<Rigidbody>().velocity = Firearm.Params.MuzzleVelocity * (Firearm.FireTransform.right + spread)
-                    * Mathf.Sign(Character.transform.lossyScale.x) * Random.Range(0.85f, 1.15f);
+                    * Mathf.Sign(pawnModel.transform.lossyScale.x) * Random.Range(0.85f, 1.15f);
 
-                var sortingOrder = Character.FirearmsRenderers.Single(j => j.name == "Rifle").sortingOrder;
+                var sortingOrder = pawnModel.FirearmsRenderers.Single(j => j.name == "Rifle").sortingOrder;
 
                 foreach (var r in bullet.Renderers)
                 {
                     r.sortingOrder = sortingOrder;
                 }
 
-                var ignoreCollider = Character.GetComponent<Collider>();
+                var ignoreCollider = pawnModel.GetComponent<Collider>();
 
                 if (ignoreCollider != null)
                 {
                     Physics.IgnoreCollision(bullet.GetComponent<Collider>(), ignoreCollider);
                 }
 
-                bullet.gameObject.layer = 31; // TODO: Create layer in your project and disable collision for it (in psysics settings)
+                bullet.gameObject.layer = 31; // Create layer in your project and disable collision for it (in psysics settings)
                 Physics.IgnoreLayerCollision(31, 31, true);
             }
         }
@@ -222,11 +225,11 @@ namespace Assets.HeroEditor.Common.Scripts.CharacterScripts.Firearms
         {
             var duration = 60f / Mathf.Max(600, Firearm.Params.FireRateInMinute);
 
-            Slide.GetComponent<SpriteRenderer>().sprite = Character.Firearms[7];
+            Slide.GetComponent<SpriteRenderer>().sprite = pawnModel.Firearms[7];
 
             yield return new WaitForSeconds(duration / 2);
 
-            Slide.GetComponent<SpriteRenderer>().sprite = Character.Firearms[6];
+            Slide.GetComponent<SpriteRenderer>().sprite = pawnModel.Firearms[6];
 
             _fire = false;
         }
@@ -246,7 +249,7 @@ namespace Assets.HeroEditor.Common.Scripts.CharacterScripts.Firearms
 
 		private bool AngryFace
         {
-            set { Character.SetExpression(value ? "Angry" : "Default"); }
+            set { pawnModel.SetExpression(value ? "Angry" : "Default"); }
         }
 
         private static IEnumerator AnimateOffset(Transform target, Vector3 offset, Vector3 origin, bool spring = false, float duration = 0.05f)

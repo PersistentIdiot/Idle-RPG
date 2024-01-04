@@ -104,7 +104,7 @@ namespace Assets.HeroEditor.InventorySystem.Scripts.Elements
             StartCoroutine(OnPointerClickDelayed(eventData));
         }
 
-        private IEnumerator OnPointerClickDelayed(PointerEventData eventData) // TODO: A workaround. We should wait for initializing other components.
+        private IEnumerator OnPointerClickDelayed(PointerEventData eventData) // A workaround. We should wait for initializing other components.
         {
             yield return null;
 

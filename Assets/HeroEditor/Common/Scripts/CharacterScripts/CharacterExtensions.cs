@@ -30,7 +30,7 @@ namespace Assets.HeroEditor.Common.Scripts.CharacterScripts
 
         public static Firearm GetFirearm(this CharacterBase character)
         {
-            return ((Character) character).Firearm;
+            return ((PawnModel) character).Firearm;
         }
     }
 }

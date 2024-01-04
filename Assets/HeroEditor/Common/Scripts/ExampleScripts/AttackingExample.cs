@@ -4,6 +4,7 @@ using Assets.HeroEditor.Common.Scripts.CharacterScripts.Firearms;
 using Assets.HeroEditor.Common.Scripts.CharacterScripts.Firearms.Enums;
 using HeroEditor.Common.Enums;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
 {
@@ -12,7 +13,9 @@ namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
     /// </summary>
     public class AttackingExample : MonoBehaviour
     {
-        public Character Character;
+        [FormerlySerializedAs("characterModel")]
+        [FormerlySerializedAs("Character")]
+        public PawnModel pawnModel;
         public BowExample BowExample;
         public Firearm Firearm;
         public Transform ArmL;
@@ -24,7 +27,7 @@ namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
 
         public void Start()
         {
-            if ((Character.WeaponType == WeaponType.Firearm1H || Character.WeaponType == WeaponType.Firearm2H) && Firearm.Params.Type == FirearmType.Unknown)
+            if ((pawnModel.WeaponType == WeaponType.Firearm1H || pawnModel.WeaponType == WeaponType.Firearm2H) && Firearm.Params.Type == FirearmType.Unknown)
             {
                 throw new Exception("Firearm params not set.");
             }
@@ -32,16 +35,16 @@ namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
         
         public void Update()
         {
-            if (Character.Animator.GetInteger("State") >= (int) CharacterState.DeathB) return;
+            if (pawnModel.Animator.GetInteger("State") >= (int) CharacterState.DeathB) return;
 
-            switch (Character.WeaponType)
+            switch (pawnModel.WeaponType)
             {
                 case WeaponType.Melee1H:
                 case WeaponType.Melee2H:
                 case WeaponType.MeleePaired:
                     if (Input.GetKeyDown(FireButton))
                     {
-                        Character.Slash();
+                        pawnModel.Slash();
                     }
                     break;
                 case WeaponType.Bow:
@@ -58,14 +61,14 @@ namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
 	            case WeaponType.Supplies:
 		            if (Input.GetKeyDown(FireButton))
 		            {
-			            Character.Animator.Play(Time.frameCount % 2 == 0 ? "UseSupply" : "ThrowSupply", 0); // Play animation randomly.
+			            pawnModel.Animator.Play(Time.frameCount % 2 == 0 ? "UseSupply" : "ThrowSupply", 0); // Play animation randomly.
 		            }
 		            break;
 			}
 
             if (Input.GetKeyDown(FireButton))
             {
-                Character.GetReady();
+                pawnModel.GetReady();
             }
         }
 
@@ -74,7 +77,7 @@ namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
         /// </summary>
         public void LateUpdate()
         {
-            switch (Character.GetState())
+            switch (pawnModel.GetState())
             {
                 case CharacterState.DeathB:
                 case CharacterState.DeathF:
@@ -84,11 +87,11 @@ namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
             Transform arm;
             Transform weapon;
 
-            switch (Character.WeaponType)
+            switch (pawnModel.WeaponType)
             {
                 case WeaponType.Bow:
                     arm = ArmL;
-                    weapon = Character.BowRenderers[3].transform;
+                    weapon = pawnModel.BowRenderers[3].transform;
                     break;
                 case WeaponType.Firearm1H:
                 case WeaponType.Firearm2H:
@@ -99,7 +102,7 @@ namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
                     return;
             }
 
-            if (Character.IsReady())
+            if (pawnModel.IsReady())
             {
                 RotateArm(arm, weapon, FixedArm ? arm.position + 1000 * Vector3.right : Camera.main.ScreenToWorldPoint(Input.mousePosition), -40, 40);
             }
@@ -111,7 +114,7 @@ namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
         /// <summary>
         /// Selected arm to position (world space) rotation, with limits.
         /// </summary>
-        public void RotateArm(Transform arm, Transform weapon, Vector2 target, float angleMin, float angleMax) // TODO: Very hard to understand logic.
+        public void RotateArm(Transform arm, Transform weapon, Vector2 target, float angleMin, float angleMax) // Very hard to understand logic.
         {
             target = arm.transform.InverseTransformPoint(target);
             

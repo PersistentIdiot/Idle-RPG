@@ -24,7 +24,7 @@ namespace Assets.HeroEditor.InventorySystem.Scripts
         public AudioSource AudioSource;
         public AudioClip TradeSound;
         public AudioClip NoMoney;
-        public Character Dummy;
+        public PawnModel Dummy;
         public bool CanBuy = true;
         public bool CanSell = true;
         public bool ExampleInitialize;

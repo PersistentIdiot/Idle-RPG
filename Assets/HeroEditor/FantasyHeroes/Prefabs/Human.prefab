@@ -3495,7 +3495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe6073c44d26430a87a351b9a430bd08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Character: {fileID: 114665035860700710}
+  pawnModel: {fileID: 114665035860700710}
   Firearm: {fileID: 8293370063637748550}
   Finger: {fileID: 4167376959950887476}
   Slide: {fileID: 4845403332224174}
@@ -3520,7 +3520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9615df837a0e43948b5e4c09b832dbed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Character: {fileID: 114665035860700710}
+  pawnModel: {fileID: 114665035860700710}
   Firearm: {fileID: 8293370063637748550}
   AudioSource: {fileID: 82471844665002080}
   ReloadButtonDown: 0

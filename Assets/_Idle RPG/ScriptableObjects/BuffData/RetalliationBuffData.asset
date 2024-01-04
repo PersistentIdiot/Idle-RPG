@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efafdc07ca364d3ea20bc24d68db83a5, type: 3}
   m_Name: RetalliationBuffData
   m_EditorClassIdentifier: 
-  Name: 
-  Description: 
-  Icon: {fileID: 0}
+  PawnBuffScript: {fileID: 11500000, guid: e36cd53680224e678c4cc1d241ad2533, type: 3}
+  Name: Retalliation
+  Description: Automatically attacks when attacked
+  Icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}

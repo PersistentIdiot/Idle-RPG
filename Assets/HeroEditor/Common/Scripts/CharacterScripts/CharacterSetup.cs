@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace Assets.HeroEditor.Common.Scripts.CharacterScripts
 {
-    public partial class Character
+    public partial class PawnModel
     {
         /// <summary>
         /// Set character's body parts.
@@ -262,7 +262,7 @@ namespace Assets.HeroEditor.Common.Scripts.CharacterScripts
         {
             if (firearmParams == null) return;
 
-            Firearm.Params = firearmParams; // TODO:
+            Firearm.Params = firearmParams; 
 		    Firearm.SlideTransform.localPosition = firearmParams.SlidePosition;
 		    Firearm.MagazineTransform.localPosition = firearmParams.MagazinePosition;
 		    Firearm.FireTransform.localPosition = firearmParams.FireMuzzlePosition;

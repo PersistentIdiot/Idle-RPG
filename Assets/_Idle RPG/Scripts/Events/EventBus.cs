@@ -27,6 +27,7 @@ public static class EventBus {
         eventBus.Raise(in e);
     }
 
+    /// !! Be sure to use 'ref' or it'll error !!
     public static void RaiseImmediately<T>(ref T e) where T : IEvent {
         eventBus.RaiseImmediately(ref e);
     }

@@ -10,7 +10,7 @@ namespace Assets.HeroEditor.Common.Scripts.EditorScripts
     [RequireComponent(typeof(Camera))]
     public class SpriteSheetCapture : MonoBehaviour
     {
-        private Character _character;
+        private PawnModel m_PawnModel;
 
         public void Capture(List<CaptureOption> options, int frameSize, int frameCount, bool shadow)
         {
@@ -19,34 +19,34 @@ namespace Assets.HeroEditor.Common.Scripts.EditorScripts
 
         private IEnumerator CaptureFrames(List<CaptureOption> options, int frameSize, int frameCount, bool shadow)
         {
-            _character = FindObjectOfType<Character>();
-            _character.LayerManager.Sprites[0].gameObject.SetActive(shadow);
+            m_PawnModel = FindObjectOfType<PawnModel>();
+            m_PawnModel.LayerManager.Sprites[0].gameObject.SetActive(shadow);
 
             var clips = new Dictionary<string, List<Texture2D>>();
 
             foreach (var option in options)
             {
-                _character.Animator.SetInteger("State", (int) option.State);
+                m_PawnModel.Animator.SetInteger("State", (int) option.State);
 
                 if (option.Action != null)
                 {
-                    _character.Animator.SetTrigger(option.Action);
+                    m_PawnModel.Animator.SetTrigger(option.Action);
                 }
                 else
                 {
-                    _character.Animator.ResetTrigger("Slash");
-                    _character.Animator.ResetTrigger("Jab");
+                    m_PawnModel.Animator.ResetTrigger("Slash");
+                    m_PawnModel.Animator.ResetTrigger("Jab");
                 }
 
-                _character.Animator.SetBool("Action", option.Action != null);
-                _character.Animator.speed = 2;
+                m_PawnModel.Animator.SetBool("Action", option.Action != null);
+                m_PawnModel.Animator.speed = 2;
 
                 yield return new WaitForSeconds(0.1f);
 
-                _character.Animator.speed = 0;
+                m_PawnModel.Animator.speed = 0;
 
-                var upperClip = _character.Animator.GetCurrentAnimatorClipInfo(0)[0].clip;
-                var lowerClip = _character.Animator.GetCurrentAnimatorClipInfo(1)[0].clip;
+                var upperClip = m_PawnModel.Animator.GetCurrentAnimatorClipInfo(0)[0].clip;
+                var lowerClip = m_PawnModel.Animator.GetCurrentAnimatorClipInfo(1)[0].clip;
                 
                 for (var j = 0; j < frameCount; j++)
                 {
@@ -56,7 +56,7 @@ namespace Assets.HeroEditor.Common.Scripts.EditorScripts
 
                     if (expressionEvent != null)
                     {
-                        _character.SetExpression(expressionEvent.stringParameter);
+                        m_PawnModel.SetExpression(expressionEvent.stringParameter);
                     }
 
                     yield return ShowFrame(upperClip.name, lowerClip.name, normalizedTime);
@@ -75,8 +75,8 @@ namespace Assets.HeroEditor.Common.Scripts.EditorScripts
                 }
             }
 
-            _character.SetState(CharacterState.Idle);
-            _character.Animator.speed = 1;
+            m_PawnModel.SetState(CharacterState.Idle);
+            m_PawnModel.Animator.speed = 1;
 
             var texture = CreateSheet(clips, frameSize, frameSize);
 
@@ -85,17 +85,17 @@ namespace Assets.HeroEditor.Common.Scripts.EditorScripts
 
         private IEnumerator ShowFrame(string upperClip, string lowerClip, float normalizedTime)
         {
-            _character.Animator.Play(upperClip, 0, normalizedTime);
-            _character.Animator.Play(lowerClip, 1, normalizedTime);
+            m_PawnModel.Animator.Play(upperClip, 0, normalizedTime);
+            m_PawnModel.Animator.Play(lowerClip, 1, normalizedTime);
 
             yield return null;
 
-            while (_character.Animator.GetCurrentAnimatorClipInfo(0).Length == 0)
+            while (m_PawnModel.Animator.GetCurrentAnimatorClipInfo(0).Length == 0)
             {
                 yield return null;
             }
 
-            if (_character.Animator.IsInTransition(1))
+            if (m_PawnModel.Animator.IsInTransition(1))
             {
                 Debug.Log("IsInTransition");
             }

@@ -47,7 +47,7 @@ namespace Assets.HeroEditor.Common.Scripts.CharacterScripts
 	    /// </summary>
 		public void SetExpression(string expression)
 	    {
-		    transform.parent.GetComponent<Character>().SetExpression(expression);
+		    transform.parent.GetComponent<PawnModel>().SetExpression(expression);
 		}
 
 	    /// <summary>
@@ -55,7 +55,7 @@ namespace Assets.HeroEditor.Common.Scripts.CharacterScripts
 	    /// </summary>
 	    public void ResetAnimation()
 	    {
-			transform.parent.GetComponent<Character>().UpdateAnimation();
+			transform.parent.GetComponent<PawnModel>().UpdateAnimation();
 	    }
 	}
 }

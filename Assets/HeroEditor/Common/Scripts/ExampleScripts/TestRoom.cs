@@ -4,12 +4,15 @@ using Assets.HeroEditor.Common.Scripts.CharacterScripts;
 using Assets.HeroEditor.Common.Scripts.EditorScripts;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
 {
     public class TestRoom : MonoBehaviour
     {
-        public Character Character;
+        [FormerlySerializedAs("characterModel")]
+        [FormerlySerializedAs("Character")]
+        public PawnModel pawnModel;
         public static string ReturnSceneName;
 
         public void Awake()
@@ -23,7 +26,7 @@ namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
         {
             if (CharacterEditor.CharacterJson != null)
             {
-                Character.FromJson(CharacterEditor.CharacterJson);
+                pawnModel.FromJson(CharacterEditor.CharacterJson);
             }
         }
 

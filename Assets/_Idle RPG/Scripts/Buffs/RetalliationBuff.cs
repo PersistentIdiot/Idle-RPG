@@ -1,29 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class RetalliationBuff : PawnBuff {
     private void OnEnable() {
+        base.OnBuffAdded();
         OnBuffAdded();
     }
 
     private void OnDisable() {
+        base.OnBuffRemoved();
         OnBuffRemoved();
     }
 
     public override void OnBuffAdded() {
-        EventBus.SubscribeTo<TestAttackEvent>(AttackHandler);
+        EventBus.SubscribeTo<AttackEvent>(RetalliateHandler);
     }
 
     public override void OnBuffRemoved() {
-        EventBus.UnsubscribeFrom<TestAttackEvent>(AttackHandler);
+        EventBus.UnsubscribeFrom<AttackEvent>(RetalliateHandler);
     }
 
-    private void AttackHandler(ref TestAttackEvent eventData) {
+    private void RetalliateHandler(ref AttackEvent eventData) {
         // Check if owner is victim of the attack
         if (eventData.Victims.Any(pawn => pawn == Owner)) {
-            Debug.Log($"{nameof(TestAttackListener)} is attacking in response to an attack!");
+            Debug.Log($"{nameof(TestAttackListener)} - {Owner.gameObject.name} is attacking {eventData.Instigator.gameObject.name} in response to an attack!");
             // If we are, post a game response with the aggressors as the target.
             List<Pawn> aggressors = new List<Pawn>();
             aggressors.Add(eventData.Instigator);
@@ -32,20 +35,17 @@ public class RetalliationBuff : PawnBuff {
             var response = new GameActionNode(
                 Owner,
                 aggressors,
-                () => {
-                    //owner.TestAttack();
-                    var attackEvent = new TestAttackEvent {
+                async () => {
+                    var attackEvent = new AttackEvent {
                         Instigator = Owner,
                         Victims = aggressors
                     };
                     EventBus.RaiseImmediately(ref attackEvent);
-                    Owner.Character.Jab();
-
-                    return default;
+                    Owner.PawnModel.Jab();
+                    await UniTask.Delay(TimeSpan.FromSeconds(Owner.AttackDuration), ignoreTimeScale: false);
                 },
                 (instigator, victims) => {
-                    instigator.Stats.CurrentHealth -= Owner.Stats.AttackDamage / 2;
-                    BattleManager.Instance.TESTDamageNumber.Spawn(instigator.transform.position + new Vector3(0, 2, 0), Owner.Stats.AttackDamage / 2);
+                    instigator.TakeDamage(Owner, Owner.Stats.AttackDamage / 2);
                 });
             BattleManager.Instance.AddGameActionResponse(response);
         }

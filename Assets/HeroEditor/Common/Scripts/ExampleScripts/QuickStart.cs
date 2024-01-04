@@ -11,7 +11,7 @@ namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
     /// </summary>
     public class QuickStart : MonoBehaviour
     {
-        public List<Character> CharacterPrefabs;
+        public List<PawnModel> CharacterPrefabs;
         public MovementExample MovementExample;
         public AttackingExample AttackingExample;
         public BowExample BowExample;
@@ -27,15 +27,15 @@ namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
 
             character.transform.position = Vector2.zero;
 
-            MovementExample.Character = character;
-            AttackingExample.Character = character;
-            BowExample.Character = character;
+            MovementExample.pawnModel = character;
+            AttackingExample.pawnModel = character;
+            BowExample.pawnModel = character;
             AttackingExample.Firearm = character.Firearm;
             AttackingExample.ArmL = character.BodyRenderers.First(i => i.name == "ArmL").transform;
             AttackingExample.ArmR = character.BodyRenderers.First(i => i.name == "ArmR[1]").transform;
-            EquipmentExample.Character = character;
-            AppearanceExample.Character = character;
-            InventoryExample.Character = character;
+            EquipmentExample.pawnModel = character;
+            AppearanceExample.pawnModel = character;
+            InventoryExample.pawnModel = character;
         }
 
         public void Update()

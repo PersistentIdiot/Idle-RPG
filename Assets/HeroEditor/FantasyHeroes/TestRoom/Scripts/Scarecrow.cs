@@ -1,6 +1,7 @@
 ﻿using Assets.HeroEditor.FantasyHeroes.TestRoom.Scripts;
 using Assets.HeroEditor.Common.Scripts.CharacterScripts;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Assets.HeroEditor.FantasyHeroes.TestRoom.Scarecrow
 {
@@ -9,29 +10,31 @@ namespace Assets.HeroEditor.FantasyHeroes.TestRoom.Scarecrow
     /// </summary>
     public class Scarecrow : MonoBehaviour
     {
-        public Character Character;
+        [FormerlySerializedAs("characterModel")]
+        [FormerlySerializedAs("Character")]
+        public PawnModel pawnModel;
 
         public void Start()
         {
-            Character = FindObjectOfType<Character>();
+            pawnModel = FindObjectOfType<PawnModel>();
 
-            if (Character != null)
+            if (pawnModel != null)
             {
-                Character.Animator.GetComponent<AnimationEvents>().OnCustomEvent += OnAnimationEvent;
+                pawnModel.Animator.GetComponent<AnimationEvents>().OnCustomEvent += OnAnimationEvent;
             }
         }
 
         public void OnDestroy()
         {
-            if (Character != null)
+            if (pawnModel != null)
             {
-                Character.Animator.GetComponent<AnimationEvents>().OnCustomEvent -= OnAnimationEvent;
+                pawnModel.Animator.GetComponent<AnimationEvents>().OnCustomEvent -= OnAnimationEvent;
             }
         }
 
         private void OnAnimationEvent(string eventName)
         {
-            if (eventName == "Hit" && Vector2.Distance(Character.MeleeWeapon.Edge.position, transform.position) < 1.5)
+            if (eventName == "Hit" && Vector2.Distance(pawnModel.MeleeWeapon.Edge.position, transform.position) < 1.5)
             {
                 GetComponent<Monster>().Spring();
             }

@@ -29,7 +29,7 @@ namespace Assets.HeroEditor.InventorySystem.Scripts.Elements
 	    /// <summary>
 	    /// Character preview.
 	    /// </summary>
-		public Character Preview;
+		public PawnModel Preview;
 
         public Transform Scheme;
         public int BagSize;

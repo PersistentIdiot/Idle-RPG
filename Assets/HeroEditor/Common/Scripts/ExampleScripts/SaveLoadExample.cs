@@ -12,7 +12,7 @@ namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
 	/// Class for storing character data
 	/// </summary>
 	[Serializable]
-	public class CharacterData // TODO: Add more properties
+	public class CharacterData //  Add more properties
 	{
 		public string Helmet;
 		public string Armor;
@@ -25,30 +25,30 @@ namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
 	/// </summary>
 	public static class SaveLoadExample
 	{
-		public static void SaveToPlayerPrefs(Character character)
+		public static void SaveToPlayerPrefs(PawnModel pawnModel)
 		{
 			var characterData = new CharacterData
 			{
-				Helmet = character.Helmet.texture.name,
-				Armor = character.Armor[0].texture.name,
-				WeaponType = character.WeaponType
+				Helmet = pawnModel.Helmet.texture.name,
+				Armor = pawnModel.Armor[0].texture.name,
+				WeaponType = pawnModel.WeaponType
 			};
 
-			switch (character.WeaponType)
+			switch (pawnModel.WeaponType)
 			{
 				case WeaponType.Melee1H:
 				case WeaponType.Melee2H:
-					characterData.Weapons = new List<string> { character.PrimaryMeleeWeapon.texture.name };
+					characterData.Weapons = new List<string> { pawnModel.PrimaryMeleeWeapon.texture.name };
 					break;
 				case WeaponType.MeleePaired:
-					characterData.Weapons = new List<string> { character.PrimaryMeleeWeapon.texture.name, character.SecondaryMeleeWeapon.texture.name };
+					characterData.Weapons = new List<string> { pawnModel.PrimaryMeleeWeapon.texture.name, pawnModel.SecondaryMeleeWeapon.texture.name };
 					break;
 				case WeaponType.Bow:
-					characterData.Weapons = new List<string> { character.Bow[0].texture.name };
+					characterData.Weapons = new List<string> { pawnModel.Bow[0].texture.name };
 					break;
 				case WeaponType.Firearm1H:
 				case WeaponType.Firearm2H:
-					characterData.Weapons = new List<string> { character.Firearms[0].texture.name };
+					characterData.Weapons = new List<string> { pawnModel.Firearms[0].texture.name };
 					break;
 				default: throw new NotImplementedException();
 			}
@@ -66,9 +66,9 @@ namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
 			return JsonUtility.FromJson<CharacterData>(json);
 		}
 
-		public static Character CreateCharacter(GameObject prefab, CharacterData characterData)
+		public static PawnModel CreateCharacter(GameObject prefab, CharacterData characterData)
 		{
-			var character = Object.Instantiate(prefab).GetComponent<Character>();
+			var character = Object.Instantiate(prefab).GetComponent<PawnModel>();
             var spriteCollection = character.SpriteCollection;
 
 			character.Helmet = spriteCollection.Helmet.Single(i => i.Name == characterData.Helmet).Sprite;

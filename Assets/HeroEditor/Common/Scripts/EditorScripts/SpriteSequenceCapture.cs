@@ -29,7 +29,7 @@ namespace Assets.HeroEditor.Common.Scripts.EditorScripts
         public InputField FolderName;
 	    public GameObject Shadow;
 
-	    private Character _character;
+	    private PawnModel m_PawnModel;
 	    private ScreenshotTransparent _screenshotTransparent;
 
 		#if UNITY_EDITOR
@@ -61,7 +61,7 @@ namespace Assets.HeroEditor.Common.Scripts.EditorScripts
         /// </summary>
         public void Start()
         {
-	        _character = FindObjectOfType<Character>();
+	        m_PawnModel = FindObjectOfType<PawnModel>();
 	        _screenshotTransparent = Camera.AddComponent<ScreenshotTransparent>();
 
             foreach (var dropdown in new[] { UpperAnimationDropdown, LowerAnimationDropdown, FrameSizeDropdown, FrameRatioDropdown, ScreenshotIntervalDropdown, ShadowDropdown })
@@ -91,22 +91,22 @@ namespace Assets.HeroEditor.Common.Scripts.EditorScripts
         /// </summary>
         public void Load(string path)
         {
-            var character = UnityEditor.AssetDatabase.LoadAssetAtPath<Character>(path);
+            var character = UnityEditor.AssetDatabase.LoadAssetAtPath<PawnModel>(path);
 
             if (character == null) throw new Exception("Error loading character, please make sure you are loading correct prefab!");
 
-			if (_character != null) Destroy(_character.gameObject);
+			if (m_PawnModel != null) Destroy(m_PawnModel.gameObject);
 
-	        _character = Instantiate(character);
-	        _character.transform.SetParent(transform);
-			_character.transform.localPosition = Vector3.zero;
-	        _character.transform.localScale = Vector3.one;
+	        m_PawnModel = Instantiate(character);
+	        m_PawnModel.transform.SetParent(transform);
+			m_PawnModel.transform.localPosition = Vector3.zero;
+	        m_PawnModel.transform.localScale = Vector3.one;
 
 			Debug.LogWarning("All materials were replaced by [Sprites/Default] to avoid outline issues.");
 
 	        var mat = new Material(Shader.Find("Sprites/Default"));
 
-			foreach (var spriteRenderer in _character.GetComponentsInChildren<SpriteRenderer>())
+			foreach (var spriteRenderer in m_PawnModel.GetComponentsInChildren<SpriteRenderer>())
 	        {
 		        if (spriteRenderer.name != "Eyes")
 		        {
@@ -120,7 +120,7 @@ namespace Assets.HeroEditor.Common.Scripts.EditorScripts
         /// </summary>
         public void Capture()
         {
-			if (_character == null) throw new Exception("Please load a character first!");
+			if (m_PawnModel == null) throw new Exception("Please load a character first!");
 			if (UpperAnimationDropdown.value == 0 && LowerAnimationDropdown.value == 0) throw new Exception("[Any] + [Any] animation is not supported!");
 
 			var frameSize = new[] { 256, 512, 1024 }[FrameSizeDropdown.value];
@@ -140,17 +140,17 @@ namespace Assets.HeroEditor.Common.Scripts.EditorScripts
         {
             if (upperClip == null)
             {
-                _character.Animator.SetBool(lowerClip, true);
+                m_PawnModel.Animator.SetBool(lowerClip, true);
             }
             else
             {
-                _character.Animator.Play(upperClip, 0, normalizedTime);
+                m_PawnModel.Animator.Play(upperClip, 0, normalizedTime);
             }
 
-	        _character.Animator.Play(lowerClip, 1, normalizedTime);
-			_character.Animator.speed = 0;
+	        m_PawnModel.Animator.Play(lowerClip, 1, normalizedTime);
+			m_PawnModel.Animator.speed = 0;
 
-	        if (_character.Animator.IsInTransition(1))
+	        if (m_PawnModel.Animator.IsInTransition(1))
 	        {
 				Debug.Log("IsInTransition");
 	        }

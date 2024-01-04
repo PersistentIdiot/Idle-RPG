@@ -4,6 +4,7 @@ using Assets.HeroEditor.InventorySystem.Scripts;
 using Assets.HeroEditor.InventorySystem.Scripts.Data;
 using Assets.HeroEditor.InventorySystem.Scripts.Elements;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
 {
@@ -11,7 +12,9 @@ namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
     {
         public ItemCollection ItemCollection;
         public ScrollInventory Inventory;
-        public Character Character;
+        [FormerlySerializedAs("characterModel")]
+        [FormerlySerializedAs("Character")]
+        public PawnModel pawnModel;
         public AppearanceExample AppearanceExample;
 
         public void Awake()
@@ -26,7 +29,7 @@ namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
 
             InventoryItem.OnLeftClick = item =>
             {
-                Character.Equip(item);
+                pawnModel.Equip(item);
                 AppearanceExample.Refresh();
             };
             Inventory.Initialize(ref items);

@@ -14,7 +14,7 @@ namespace Assets.HeroEditor.Common.Scripts.CharacterScripts
     /// <summary>
     /// Character presentation in editor. Contains sprites, renderers, animation and so on.
     /// </summary>
-    public partial class Character : CharacterBase
+    public partial class PawnModel : CharacterBase
     {
         [Header("Weapons")]
         public MeleeWeapon MeleeWeapon;

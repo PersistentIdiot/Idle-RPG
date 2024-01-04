@@ -1,5 +1,6 @@
 ﻿using Assets.HeroEditor.Common.Scripts.CharacterScripts;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
 {
@@ -8,7 +9,9 @@ namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
     /// </summary>
     public class MovementExample : MonoBehaviour
     {
-        public Character Character;
+        [FormerlySerializedAs("characterModel")]
+        [FormerlySerializedAs("Character")]
+        public PawnModel pawnModel;
         public CharacterController Controller; // https://docs.unity3d.com/ScriptReference/CharacterController.html
         
         private Vector3 _speed = Vector3.zero;
@@ -17,14 +20,14 @@ namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
         {
             if (Controller == null)
             {
-                Controller = Character.gameObject.AddComponent<CharacterController>();
+                Controller = pawnModel.gameObject.AddComponent<CharacterController>();
                 Controller.center = new Vector3(0, 1.125f);
                 Controller.height = 2.5f;
                 Controller.radius = 0.75f;
                 Controller.minMoveDistance = 0;
             }
 
-            Character.Animator.SetBool("Ready", true);
+            pawnModel.Animator.SetBool("Ready", true);
         }
  
         public void Update()
@@ -39,7 +42,7 @@ namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
 
             if (Input.GetKeyDown(KeyCode.D))
             {
-                Character.SetState(CharacterState.DeathB);
+                pawnModel.SetState(CharacterState.DeathB);
             }
         }
 
@@ -59,16 +62,16 @@ namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
             {
                 if (direction != Vector2.zero)
                 {
-                    Character.SetState(CharacterState.Run);
+                    pawnModel.SetState(CharacterState.Run);
                 }
-                else if (Character.GetState() < CharacterState.DeathB)
+                else if (pawnModel.GetState() < CharacterState.DeathB)
                 {
-                    Character.SetState(CharacterState.Idle);
+                    pawnModel.SetState(CharacterState.Idle);
                 }
             }
             else
             {
-                Character.SetState(CharacterState.Jump);
+                pawnModel.SetState(CharacterState.Jump);
             }
 
             _speed.y -= 25 * Time.deltaTime; // Depends on project physics settings
@@ -77,7 +80,7 @@ namespace Assets.HeroEditor.Common.Scripts.ExampleScripts
 
         public void Turn(float direction)
         {
-            Character.transform.localScale = new Vector3(Mathf.Sign(direction), 1, 1);
+            pawnModel.transform.localScale = new Vector3(Mathf.Sign(direction), 1, 1);
         }
     }
 }

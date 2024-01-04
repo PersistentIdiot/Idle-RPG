@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2782df723d129bd48903b796322914be, type: 3}
   m_Name: PawnBuffDatabase
   m_EditorClassIdentifier: 
-  buffDatas: []
+  buffDatas:
+  - {fileID: 11400000, guid: 3e404c6c2db260c4f9288b1edf14cecd, type: 2}

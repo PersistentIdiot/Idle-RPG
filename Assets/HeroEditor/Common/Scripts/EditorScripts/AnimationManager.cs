@@ -1,5 +1,6 @@
 ﻿using Assets.HeroEditor.Common.Scripts.CharacterScripts;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Assets.HeroEditor.Common.Scripts.EditorScripts
@@ -9,7 +10,9 @@ namespace Assets.HeroEditor.Common.Scripts.EditorScripts
     /// </summary>
     public class AnimationManager : MonoBehaviour
     {
-        public Character Character;
+        [FormerlySerializedAs("characterModel")]
+        [FormerlySerializedAs("Character")]
+        public PawnModel pawnModel;
         public Text UpperClipName;
         public Text LowerClipName;
 
@@ -18,14 +21,14 @@ namespace Assets.HeroEditor.Common.Scripts.EditorScripts
         /// </summary>
         public void Start()
         {
-            Character.UpdateAnimation();
+            pawnModel.UpdateAnimation();
             Refresh();
         }
 
         public void Refresh()
         {
             UpperClipName.text = "Relax / Ready";
-            LowerClipName.text = Character.GetState().ToString();
+            LowerClipName.text = pawnModel.GetState().ToString();
         }
 
         /// <summary>
@@ -33,13 +36,13 @@ namespace Assets.HeroEditor.Common.Scripts.EditorScripts
         /// </summary>
         public void PlayUpperBodyAnimation(int direction)
         {
-            if (Character.IsReady())
+            if (pawnModel.IsReady())
             {
-                Character.Relax();
+                pawnModel.Relax();
             }
             else
             {
-                Character.GetReady();
+                pawnModel.GetReady();
             }
 
             Refresh();
@@ -50,7 +53,7 @@ namespace Assets.HeroEditor.Common.Scripts.EditorScripts
         /// </summary>
         public void PlayLowerBodyAnimation(int direction)
         {
-            var state = Character.GetState();
+            var state = pawnModel.GetState();
 
             state += direction;
 
@@ -63,7 +66,7 @@ namespace Assets.HeroEditor.Common.Scripts.EditorScripts
                 state = CharacterState.Idle;
             }
 
-            Character.SetState(state);
+            pawnModel.SetState(state);
 
             Refresh(); 
         }
