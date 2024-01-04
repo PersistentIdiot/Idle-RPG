@@ -2,12 +2,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using DamageNumbersPro;
 using UnityEngine;
 
 public class BattleManager : Singleton<BattleManager> {
     public List<Pawn> AllPawns = new List<Pawn>();
     public List<Pawn> Allies = new List<Pawn>();
     public List<Pawn> Enemies = new List<Pawn>();
+    public DamageNumber TESTDamageNumber;
 
     public GameActionNode currentNode = null;
     private CancellationTokenSource _cts;

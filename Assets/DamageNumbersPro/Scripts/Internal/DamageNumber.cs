@@ -282,7 +282,7 @@ namespace DamageNumbersPro
 
         //Pooling:
         DamageNumber originalPrefab;
-        static Transform poolParent;
+        public static Transform poolParent;
         static Dictionary<int, HashSet<DamageNumber>> pools;
         int poolingID;
         bool performRestart;
@@ -980,6 +980,7 @@ namespace DamageNumbersPro
             //GameObject:
             GameObject newTM = new GameObject();
             newTM.name = tmName;
+            newTM.layer = parent.gameObject.layer;
 
             //Mesh:
             MeshRenderer mr = newTM.AddComponent<MeshRenderer>();
@@ -1268,8 +1269,21 @@ namespace DamageNumbersPro
                 }
                 else
                 {
-                    string allDigits = Mathf.RoundToInt(number * Mathf.Pow(10, digitSettings.decimals)).ToString();
+                    //Digits:
+                    string allDigits = Mathf.RoundToInt(Mathf.Abs(number) * Mathf.Pow(10, digitSettings.decimals)).ToString();
+
+                    bool hasMinus = number < 0;
+
+                    //Add zeros to the left to fix numbers less than 1.
                     int usedDecimals = digitSettings.decimals;
+                    int currentLength = allDigits.Length;
+                    if(currentLength < usedDecimals)
+                    {
+                        for(int i = 0; i < usedDecimals - currentLength; i++)
+                        {
+                            allDigits = "0" + allDigits;
+                        }
+                    }
 
                     while (digitSettings.hideZeros && allDigits.EndsWith("0") && usedDecimals > 0)
                     {
@@ -1309,6 +1323,11 @@ namespace DamageNumbersPro
                     else
                     {
                         numberString = integers;
+                    }
+
+                    if (hasMinus)
+                    {
+                        numberString = "-" + numberString;
                     }
                 }
 
