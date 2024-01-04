@@ -43,6 +43,7 @@ public class Pawn : MonoBehaviour {
         };
         EventBus.RaiseImmediately(ref attackEvent);
         Character.Slash();
+        // Character.Jab();
         await UniTask.Delay(TimeSpan.FromSeconds(AttackDuration), ignoreTimeScale: false);
     }
 }
